@@ -1,0 +1,23 @@
+{
+  "name": "meetings-app",
+  "version": "1.0.0",
+  "description": "Demo CRUD application for meetings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohsinmohd/meetings-app.git"
+  },
+  "author": "Shaik Mohsin Mohammad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohsinmohd/meetings-app/issues"
+  },
+  "homepage": "https://github.com/mohsinmohd/meetings-app#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
