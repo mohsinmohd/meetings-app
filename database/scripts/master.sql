@@ -2,7 +2,7 @@ CREATE DATABASE DemoMeetings;
 USE DemoMeetings;
 
 CREATE TABLE Users (
-  UserId int NOT NULL,
+  UserId int NOT NULL AUTO_INCREMENT,
   UserName varchar(255),
   Email varchar(255),
   Password varchar(255),
@@ -10,7 +10,7 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Meetings (
-  MeetingId int NOT NULL,
+  MeetingId int NOT NULL AUTO_INCREMENT,
   Title varchar(255),
   MeetingDate date,
   UserId int NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE Meetings (
 );
 
 CREATE TABLE Attendees (
-  AttendeId int NOT NULL,
+  AttendeId int NOT NULL AUTO_INCREMENT,
   MeetingId int,
   Email varchar(255),
   PRIMARY KEY (AttendeId),
