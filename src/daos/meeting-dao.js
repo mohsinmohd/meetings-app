@@ -1,16 +1,16 @@
 const con = require('../utils/db-connection');
 
-const getAllMeetings = () => {
-    con.dbConnection.query('SELECT * FROM Meetings', (err,rows) => {
+const getAllMeetings = (userId) => {
+    con.dbConnection.query('SELECT * FROM Meetings WHERE UserId', userId, (err,rows) => {
         if(err) throw err;
 
-        console.log('Data received from Db:');
+        console.log('Meetings received from Db:');
         console.log(rows);
     })
 };
 
 const createMeeting = (meeting, attendees) => {    
-    con.dbConnection.query('INSERT INTO Meetings SET ?', Meeting, (err, res) => {
+    con.dbConnection.query('INSERT INTO Meetings SET ?', meeting, (err, res) => {
         if(err) throw err;
         console.log('Last insert ID:', res.insertId);
         
@@ -20,14 +20,16 @@ const createMeeting = (meeting, attendees) => {
         });
         console.log(toBeSavedAttendees);
 
-        con.dbConnection.query('INSERT INTO Attendees VALUES ?', [toBeSavedAttendees], (err, res) => {
-            if(err) throw err;
-            console.log('Attendees inserted');
-        })
+        if(toBeSavedAttendees.length > 0) {
+            con.dbConnection.query('INSERT INTO Attendees VALUES ?', [toBeSavedAttendees], (err, res) => {
+                if(err) throw err;
+                console.log('Attendees inserted');
+            })
+        }
     })
 };
 
-const updateMeeting = (Meeting) => {    
+const updateMeeting = (meeting) => {    
     con.dbConnection.query(
         'UPDATE Meetings SET Title ? MeetingDate ? WHERE MeetingId ?', [meeting.title, meeting.meetingDate, meeting.meetingID],
         (err, result) => {
