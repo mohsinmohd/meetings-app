@@ -20,6 +20,10 @@ app.post('/signUp', (req, res) => {
     res.send("signUp successfull");
 });
 
+app.get('/signIn', (req, res) => {
+    userController.signIn(req.query, res);
+});
+
 app.get('/meetings/:userId', (req, res) => {
     meetingsController.getAllmeetings(req.params.userId);
     res.send("Database created")
