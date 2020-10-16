@@ -4,6 +4,9 @@
   "description": "Demo CRUD application for meetings",
   "main": "index.js",
   "scripts": {
+    "css-build": "node-sass --omit-source-map-url client/sass/mystyles.scss client/css/mystyles.css",
+    "css-watch": "npm run css-build -- --watch",
+    "start": "node index.js && npm run css-watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +21,13 @@
   "homepage": "https://github.com/mohsinmohd/meetings-app#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "moment": "^2.29.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "bulma": "^0.9.1",
+    "node-sass": "^4.14.1"
   }
 }

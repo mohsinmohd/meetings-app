@@ -1,12 +1,19 @@
 const express = require('express');
+const mainController = require('../controllers/main-controller');
 const userController = require('../controllers/users-controller');
 const meetingsController = require('../controllers/meetings-controller');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
+app.use(express.static(path.join(__dirname + '/../../client')));
 
 app.listen('3000', () => {
     console.log("server started");
+});
+
+app.get('/', (req, res) => {
+    mainController.handleRequest(req, res);
 });
 
 app.get('/getUsers', (req, res) => {
