@@ -4,9 +4,14 @@ module.exports.getAllUsers = () => {
     userDao.getAllUsers();
 };
 
-module.exports.signUp = (req) => {
-    const user = { UserName: req.username, Email: req.email, Password: req.password};
-    userDao.signUp(user);
+module.exports.signUp = (req, res) => {
+    const user = { username: req.username, email: req.email, password: req.password};
+    userDao.signUp(user).then((data, err) => {
+        if(data != undefined && typeof(data) == "string" && data.startsWith("User")){
+            res.status(400).end(data);
+        }
+        res.status(200).end("Signup successful");
+    });
 }
 
 module.exports.signIn = (req, res) => {

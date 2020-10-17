@@ -1,3 +1,4 @@
+const { resolve } = require('path');
 const con = require('../utils/db-connection');
 
 
@@ -10,10 +11,19 @@ const getAllUsers = () => {
     })
 };
 
-const signUp = (user) => {    
-    con.dbConnection.query('INSERT INTO Users SET ?', user, (err, res) => {
-        if(err) throw err;
-        console.log('Last insert ID:', res.insertId);
+const signUp = (user) => {
+    return new Promise((resolve) => {
+        con.dbConnection.query('SELECT COUNT(*) as UserCount FROM Users WHERE Username = ? OR Email = ?', [user.username, user.email], (err, res) => {
+            if(err) throw err;
+            if(res[0].UserCount >= 1) {
+                return resolve("User with username or email already exist");
+            }
+            con.dbConnection.query('INSERT INTO Users SET ?', user, (err, res) => {
+                if(err) throw err;
+                console.log('Last insert ID:', res.insertId);
+                resolve(res.insertId);
+            })
+        })
     })
 };
 

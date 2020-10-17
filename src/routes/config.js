@@ -46,8 +46,7 @@ app.get('/getUsers', (req, res) => {
 
 
 app.post('/signUp', (req, res) => {
-    userController.signUp(req.body);
-    res.send("signUp successfull");
+    userController.signUp(req.body, res);
 });
 
 app.get('/signIn', (req, res) => {
