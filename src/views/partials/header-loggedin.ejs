@@ -24,16 +24,31 @@
         <a class="navbar-item" href="/">
           Home
         </a>
+  
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Meetings
+          </a>
+  
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="/createMeeting">
+              Create Meeting
+            </a>
+            <a class="navbar-item" href="/VEDMeeting">
+              View/Edit/Delete Meetings
+            </a>
+          </div>
+        </div>
       </div>
   
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary" href="/signUp">
-              <strong>Sign up</strong>
+            <a class="button is-primary">
+              <strong>Welcome!</strong>
             </a>
-            <a class="button is-light" href="/login">
-              Log in
+            <a class="button is-light" onclick="logout()">
+              Logout
             </a>
           </div>
         </div>

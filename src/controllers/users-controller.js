@@ -1,4 +1,7 @@
 const userDao = require('../daos/user-dao');
+const jwt = require('jsonwebtoken')
+
+let refreshTokens = [];//TODO: Shift this to db
 
 module.exports.getAllUsers = () => {
     userDao.getAllUsers();
@@ -14,14 +17,37 @@ module.exports.signUp = (req, res) => {
     });
 }
 
+module.exports.logout = (req, res) => {
+    refreshTokens = refreshTokens.filter(token => token !== req.body.token)
+    res.sendStatus(204);
+}
+
+module.exports.generateToken = (req, res) => {
+  const refreshToken = req.body.token
+  if (refreshToken == null) return res.sendStatus(401)
+  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403)
+    const accessToken = generateAccessToken({ name: user.name })
+    res.json({ accessToken: accessToken })
+  })
+}
+
 module.exports.signIn = (req, res) => {
     userDao.getUser(req.username).then((data, err) => {
         const user = data[0];
         if(user != undefined || user != null) {
             if(user.Password == req.password) {
-                res.status(200).end('You have been logged in');
+                const accessToken = generateAccessToken(user)
+                const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+                refreshTokens.push(refreshToken)
+                res.json({ accessToken: accessToken, refreshToken: refreshToken })
             }
         }
         res.status(400).end('Login Failed');
     });
+}
+
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
 }

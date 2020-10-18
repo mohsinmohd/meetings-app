@@ -14,13 +14,20 @@ function signInForm(formMethod, url, redirectUrl)
     var signInUrl = "/signIn?username=" + inputElements[0].value + "&password=" + inputElements[1].value;
     const other_params = {
         method : "GET",
-        mode : "cors"
+        mode : "cors",
+        headers: new Headers({
+            'Authorization': 'Bearer '+ window.localStorage.getItem('accessToken')
+        })
     };
     fetch(signInUrl, other_params)
         .then((response) => {
             if (response.ok) {                
-                //var x = data;
-                window.location = redirectUrl;
+                response.text().then((data) => {
+                    data = JSON.parse(data);
+                    window.localStorage.setItem("accessToken", data.accessToken);
+                    window.localStorage.setItem("refreshToken", data.refreshToken);
+                    window.location = redirectUrl;
+                })
             } else {
                 response.text().then((text) => {
                     alert(text);
@@ -43,7 +50,10 @@ function deleteMeeting(meetingId, redirectUrl)
     var deleteMeetingUrl = "/meetings/" + meetingId;
     const other_params = {
         method : "DELETE",
-        mode : "cors"
+        mode : "cors",
+        headers: new Headers({
+            'Authorization': 'Bearer '+ window.localStorage.getItem('accessToken')
+        })
     };
     fetch(deleteMeetingUrl, other_params)
         .then((response) => {
@@ -74,7 +84,10 @@ function submitToApi(data, method, url, redirectUrl) {
         headers : { "content-type" : "application/json; charset=UTF-8" },
         body : data,
         method : method,
-        mode : "cors"
+        mode : "cors",
+        headers: new Headers({
+            'Authorization': 'Bearer '+ window.localStorage.getItem('accessToken')
+        })
     };
 
     fetch(url, other_params)
@@ -90,4 +103,36 @@ function submitToApi(data, method, url, redirectUrl) {
         }).catch((error) => {
             alert(error.message);
         });
+}
+
+function logout() {
+    var logoutUrl = "/logout";
+    const other_params = {
+        method : "DELETE",
+        mode : "cors",
+        headers: new Headers({
+            'Authorization': 'Bearer '+ window.localStorage.getItem('accessToken')
+        })
+    };
+    fetch(logoutUrl, other_params)
+        .then((response) => {
+            if (response.ok) {                
+                //var x = data;
+                window.location = "/";
+                window.localStorage.removeItem("accessToken");
+            } else {
+                response.text().then((text) => {
+                    alert(text);
+                })
+            }
+        }).catch((error) => {
+            alert(error.message);
+        });
+}
+
+function isLoggedIn(){
+    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+    if(isLoggedIn != undefined && isLoggedIn == true) {
+        return true;
+    }
 }
