@@ -15,7 +15,7 @@
         <td><%= moment(meetings[meetingIndex].MeetingDate).format('MMM-DD-YYYY') %></td>
         <td><%= meetings[meetingIndex].attendees %></td>
         <td><a href="/editMeeting/<%= meetings[meetingIndex].MeetingId %>">Edit</a></td>
-        <td><a href="/deleteMeeting/<%= meetings[meetingIndex].MeetingId %>">Delete</a></td>
+        <td><a onclick="deleteMeeting(<%= meetings[meetingIndex].MeetingId %>, '/VEDmeeting')">Delete</a></td>
       </tr>
       <% } %>
       

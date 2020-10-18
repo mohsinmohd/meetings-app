@@ -1,6 +1,6 @@
 <div class="editMeetingPage" id="editMeetingForm">
     <input class="input" name="meetingId" type="hidden" value="<%= meeting.MeetingId %>">
-    <input class="input" name="userId" type="hidden" value="<%= meeting.userId %>">
+    <input class="input" name="userId" type="hidden" value="<%= meeting.UserId %>">
   
     <div class="field is-horizontal">
       <div class="field-label is-normal">
@@ -48,7 +48,7 @@
       <div class="field-body">
         <div class="field">
           <div class="control">
-            <button class="button is-primary" onclick="editMeetingForm('editMeeting', '/meetings/<%= meeting.MeetingId %>')">
+            <button class="button is-primary" onclick="editMeetingForm('editMeeting', '/meetings', '/VEDmeeting')">
               Edit Meeting
             </button>
           </div>

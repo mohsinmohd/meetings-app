@@ -38,11 +38,26 @@ function editMeetingForm(formMethod, url, redirectUrl)
     submitToApi(JSON.stringify(serializedObject), "PUT", url, redirectUrl)
 }
 
-function deleteMeeting(formMethod, url, redirectUrl)
+function deleteMeeting(meetingId, redirectUrl)
 {
-    var inputElements = document.getElementById(formMethod + "Form").getElementsByTagName("input");
-    var serializedObject = objectifyForm(inputElements);
-    submitToApi(JSON.stringify(serializedObject), "PUT", url, redirectUrl)
+    var deleteMeetingUrl = "/meetings/" + meetingId;
+    const other_params = {
+        method : "DELETE",
+        mode : "cors"
+    };
+    fetch(deleteMeetingUrl, other_params)
+        .then((response) => {
+            if (response.ok) {                
+                //var x = data;
+                window.location = redirectUrl;
+            } else {
+                response.text().then((text) => {
+                    alert(text);
+                })
+            }
+        }).catch((error) => {
+            alert(error.message);
+        });
 }
 
 function objectifyForm(formArray) {

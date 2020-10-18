@@ -62,17 +62,15 @@ app.get('/meetings/:id', (req, res) => {
 });
 
 app.post('/meetings', (req, res) => {
-    meetingsController.createMeeting(req.body);
+    meetingsController.createMeeting(req.body, res);
 });
 
-
-app.put('/meetings/:id', (req, res) => {
-    meetingsController.updateMeeting(req.params.id, res);
+app.put('/meetings', (req, res) => {
+    meetingsController.updateMeeting(req.body, res);
 });
 
 app.delete('/meetings/:id', (req, res) => {
-    meetingsController.deleteMeeting(req.params.id);
-    res.send("Database created")
+    meetingsController.deleteMeeting(req.params.id, res);
 });
 
 module.exports.routes = app;
