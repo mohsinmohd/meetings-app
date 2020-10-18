@@ -1,11 +1,15 @@
+const { resolve } = require('path');
 const con = require('../utils/db-connection');
 
 const getAllMeetings = (userId) => {
-    con.dbConnection.query('SELECT * FROM Meetings WHERE UserId', userId, (err,rows) => {
-        if(err) throw err;
-
-        console.log('Meetings received from Db:');
-        console.log(rows);
+    return new Promise((resolve) => {
+        con.dbConnection.query('SELECT mtg.*, GROUP_CONCAT(atn.email SEPARATOR "|") as attendees FROM demomeetings.meetings mtg left join demomeetings.attendees atn on mtg.meetingid = atn.meetingId where mtg.userId = ? group by atn.meetingId', userId, (err,rows) => {
+            if(err) throw err;
+    
+            console.log('Meetings received from Db:');
+            console.log(rows);
+            resolve(rows);
+        })
     })
 };
 
@@ -30,31 +34,34 @@ const createMeeting = (meeting, attendees) => {
 };
 
 const updateMeeting = (meeting) => {    
-    con.dbConnection.query(
-        'UPDATE Meetings SET Title ? MeetingDate ? WHERE MeetingId ?', [meeting.title, meeting.meetingDate, meeting.meetingID],
-        (err, result) => {
-            if (err) throw err;
-        
-            console.log(`Changed ${result.changedRows} row(s)`);
-            con.dbConnection.query(
-                'DELETE FROM ATTENDEES WHERE MeetingId ?',  meeting.meetingID,
-                (err, result) => {
+    return new Promise((resolve) => {
+        con.dbConnection.query(
+            'UPDATE Meetings SET Title ? MeetingDate ? WHERE MeetingId ?', [meeting.title, meeting.meetingDate, meeting.meetingID],
+            (err, result) => {
                 if (err) throw err;
-                console.log("Delete Attendees");
-                }
-            )
-            let toBeSavedAttendees = [];
-            attendees.forEach(attendee => {
-                toBeSavedAttendees.push({ meetingID: res.insertId, email: attendee });
-            });
-            console.log(toBeSavedAttendees);
-
-            con.dbConnection.query('INSERT INTO Attendees VALUES ?', [toBeSavedAttendees], (err, res) => {
-                if(err) throw err;
-                console.log('Attendees inserted');
-            })
-        }
-      );
+            
+                console.log(`Changed ${result.changedRows} row(s)`);
+                con.dbConnection.query(
+                    'DELETE FROM ATTENDEES WHERE MeetingId ?',  meeting.meetingID,
+                    (err, result) => {
+                    if (err) throw err;
+                    console.log("Delete Attendees");
+                    }
+                )
+                let toBeSavedAttendees = [];
+                attendees.forEach(attendee => {
+                    toBeSavedAttendees.push({ meetingID: res.insertId, email: attendee });
+                });
+                console.log(toBeSavedAttendees);
+    
+                con.dbConnection.query('INSERT INTO Attendees VALUES ?', [toBeSavedAttendees], (err, res) => {
+                    if(err) throw err;
+                    console.log('Attendees inserted');
+                    resolve("success");
+                })
+            }
+          )
+    })
 };
 
 
@@ -68,11 +75,13 @@ const deleteMeeting = (id) => {
     );
 };
 
-const getMeeting = (id) => {    
-    con.dbConnection.query(
-        'SELECT * FROM Meetings WHERE MeetingId = ?', id, (err, res) => {
-        if(err) throw err;
-        console.log('Update meeting');
+const getMeeting = (id) => {
+    return new Promise((resolve) => {
+        con.dbConnection.query(
+            'SELECT mtg.*, GROUP_CONCAT(atn.email SEPARATOR "|") as attendees FROM demomeetings.meetings mtg LEFT JOIN demomeetings.attendees atn on mtg.meetingid = atn.meetingId WHERE mtg.MeetingId = ? group by atn.meetingId', id, (err, res) => {
+            if(err) throw err;
+            resolve(res[0]);
+        })
     })
 };
 

@@ -1,12 +1,12 @@
-<div class="loginPage">
+<div class="loginPage" id="loginForm">
   <div class="field is-horizontal">
     <div class="field-label is-normal">
-      <label class="label">Email</label>
+      <label class="label">Username</label>
     </div>
     <div class="field-body">
       <div class="field">
         <p class="control">
-          <input class="input" type="email" placeholder="Email">
+          <input class="input" name="username" type="text" placeholder="Username">
         </p>
       </div>
     </div>
@@ -19,7 +19,7 @@
     <div class="field-body">
       <div class="field">
         <div class="control">
-          <input class="input" type="password" placeholder="password">
+          <input class="input" name="password" type="password" placeholder="password">
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
     <div class="field-body">
       <div class="field">
         <div class="control">
-          <button class="button is-primary">
+          <button class="button is-primary" onclick="signInForm('login', '/signIn', '/VEDmeeting')">
             Login
           </button>
         </div>

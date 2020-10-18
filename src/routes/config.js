@@ -31,12 +31,12 @@ app.get('/createMeeting', (req, res) => {
     res.render('../src/views/createMeeting');
 });
 
-app.get('/editMeeting', (req, res) => {
-    res.render('../src/views/editMeeting');
+app.get('/editMeeting/:id', (req, res) => {
+    meetingsController.getMeeting(req.params.id, res);
 });
 
 app.get('/VEDMeeting', (req, res) => {
-    res.render('../src/views/meeting');
+    meetingsController.getAllmeetings(req.params.userId, res);
 });
 
 app.get('/getUsers', (req, res) => {
@@ -55,23 +55,19 @@ app.get('/signIn', (req, res) => {
 
 app.get('/meetings/:userId', (req, res) => {
     meetingsController.getAllmeetings(req.params.userId);
-    res.send("Database created")
 });
 
 app.get('/meetings/:id', (req, res) => {
     meetingsController.getMeeting(req.params.id);
-    res.send("Database created")
 });
 
 app.post('/meetings', (req, res) => {
     meetingsController.createMeeting(req.body);
-    res.send("Database created")
 });
 
 
 app.put('/meetings/:id', (req, res) => {
-    meetingsController.updateMeeting(req.params.id);
-    res.send("Database created")
+    meetingsController.updateMeeting(req.params.id, res);
 });
 
 app.delete('/meetings/:id', (req, res) => {

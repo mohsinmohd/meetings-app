@@ -1,11 +1,48 @@
-function submitForm(formMethod, url)
+function submitForm(formMethod, url, redirectUrl)
 {
     var inputElements = document.getElementById(formMethod + "Form").getElementsByTagName("input");
     if(formMethod == "signUp" && inputElements[2]['value'] != inputElements[3]['value']) {
         alert("Password and ConfirmPassword don't match");
     }
-    var x = objectifyForm(inputElements);
-    submitToApi(JSON.stringify(x), url)
+    var serializedObject = objectifyForm(inputElements);
+    submitToApi(JSON.stringify(serializedObject), "POST", url, redirectUrl)
+}
+
+function signInForm(formMethod, url, redirectUrl)
+{
+    var inputElements = document.getElementById(formMethod + "Form").getElementsByTagName("input");
+    var signInUrl = "/signIn?username=" + inputElements[0].value + "&password=" + inputElements[1].value;
+    const other_params = {
+        method : "GET",
+        mode : "cors"
+    };
+    fetch(signInUrl, other_params)
+        .then((response) => {
+            if (response.ok) {                
+                //var x = data;
+                window.location = redirectUrl;
+            } else {
+                response.text().then((text) => {
+                    alert(text);
+                })
+            }
+        }).catch((error) => {
+            alert(error.message);
+        });
+}
+
+function editMeetingForm(formMethod, url, redirectUrl)
+{
+    var inputElements = document.getElementById(formMethod + "Form").getElementsByTagName("input");
+    var serializedObject = objectifyForm(inputElements);
+    submitToApi(JSON.stringify(serializedObject), "PUT", url, redirectUrl)
+}
+
+function deleteMeeting(formMethod, url, redirectUrl)
+{
+    var inputElements = document.getElementById(formMethod + "Form").getElementsByTagName("input");
+    var serializedObject = objectifyForm(inputElements);
+    submitToApi(JSON.stringify(serializedObject), "PUT", url, redirectUrl)
 }
 
 function objectifyForm(formArray) {
@@ -17,28 +54,25 @@ function objectifyForm(formArray) {
     return returnArray;
 }
 
-function submitToApi(data, url) {
+function submitToApi(data, method, url, redirectUrl) {
     const other_params = {
         headers : { "content-type" : "application/json; charset=UTF-8" },
         body : data,
-        method : "POST",
+        method : method,
         mode : "cors"
     };
 
     fetch(url, other_params)
-        .then(function(response) {
-            if (response.ok) {
-                
-                alert(response.json());
+        .then((response) => {
+            if (response.ok) {                
+                var x = data;
+                window.location = redirectUrl;
             } else {
                 response.text().then((text) => {
                     alert(text);
                 })
             }
-        }).then(function(data) {
-            document.getElementById("message").innerHTML = data.encoded;
-        }).catch(function(error) {
-            document.getElementById("message").innerHTML = error.message;
+        }).catch((error) => {
+            alert(error.message);
         });
-    return false;
 }

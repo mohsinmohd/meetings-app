@@ -1,12 +1,17 @@
 const meetingDao = require('../daos/meeting-dao');
 const moment = require('moment');
 
-module.exports.getAllmeetings = (userId) => {
-    meetingDao.getAllmeetings(userId);
+module.exports.getAllmeetings = (userId, res) => {
+    userId = 1;
+    meetingDao.getAllMeetings(userId).then((data, err) => {
+        res.render('../src/views/meeting', {meetings: data, moment: moment});
+    });
 };
 
-module.exports.getMeeting = (id) => {
-    meetingDao.getMeeting(id);
+module.exports.getMeeting = (id, res) => {
+    meetingDao.getMeeting(id).then((data) => {
+        res.render('../src/views/editMeeting', {meeting: data, moment: moment});
+    });
 };
 
 module.exports.createMeeting = (req) => {
@@ -24,9 +29,14 @@ module.exports.deleteMeeting = (id) => {
     meetingDao.deleteMeeting(id);
 }
 
-module.exports.updateMeeting = (req) => {
+module.exports.updateMeeting = (req, res) => {
     const meeting = { MeetingId: req.meetingId, Title: req.title, MeetingDate: req.meetingDate, UserId: req.userId};
     const attendees = req.attendees;
-    meetingDao.updateMeeting(meeting, attendees);
+    meetingDao.updateMeeting(meeting, attendees).then((data) => {
+        if(data == "sucess"){
+            res.status(200).end('Update Success');
+        }
+        res.status(400).end('Update Failed');
+    });
 }
 

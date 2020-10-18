@@ -1,16 +1,6 @@
-<div class="loginPage">
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label">Organizer</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <p class="control">
-            <input class="input" type="text" placeholder="organizer" readonly>
-          </p>
-        </div>
-      </div>
-    </div>
+<div class="editMeetingPage" id="editMeetingForm">
+    <input class="input" name="meetingId" type="hidden" value="<%= meeting.MeetingId %>">
+    <input class="input" name="userId" type="hidden" value="<%= meeting.userId %>">
   
     <div class="field is-horizontal">
       <div class="field-label is-normal">
@@ -19,7 +9,7 @@
       <div class="field-body">
         <div class="field">
           <p class="control">
-            <input class="input" type="text" placeholder="Title">
+            <input class="input" name="title" type="text" placeholder="Title" value="<%= meeting.Title %>">
           </p>
         </div>
       </div>
@@ -32,7 +22,7 @@
       <div class="field-body">
         <div class="field">
           <div class="control">
-            <input class="input" type="date" placeholder="Meeting Date">
+            <input class="input" name="meetingDate" type="date" placeholder="Meeting Date" value="<%= moment(meeting.MeetingDate).format('YYYY-MM-DD') %>">
           </div>
         </div>
       </div>
@@ -45,7 +35,7 @@
       <div class="field-body">
         <div class="field">
           <div class="control">
-            <input class="input" type="text" placeholder="In case of multiple attendees use Pipe | as seperator. Ex: abcd@gmail.com|abcd1@gmail.com">
+            <input class="input" name="attendees" type="text" placeholder="In case of multiple attendees use Pipe | as seperator. Ex: abcd@gmail.com|abcd1@gmail.com" value="<%= meeting.attendees %>">
           </div>
         </div>
       </div>
@@ -58,7 +48,7 @@
       <div class="field-body">
         <div class="field">
           <div class="control">
-            <button class="button is-primary">
+            <button class="button is-primary" onclick="editMeetingForm('editMeeting', '/meetings/<%= meeting.MeetingId %>')">
               Edit Meeting
             </button>
           </div>

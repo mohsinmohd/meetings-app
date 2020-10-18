@@ -1,7 +1,6 @@
 <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
     <thead>
       <tr>
-        <th>Organizer</th>
         <th>Title</th>
         <th>Meeting Date</th>
         <th>Attendees</th>
@@ -10,13 +9,15 @@
       </tr>
     </thead>
     <tbody>
+      <% for (var meetingIndex = 0; meetingIndex < meetings.length; meetingIndex++) { %>
       <tr>
-        <td>1</td>
-        <td>38</td>
-        <td>23</td>
-        <td>12</td>
-        <td><a href="/editMeeting">Edit</a></td>
-        <td><a href="/deleteMeeting">Delete</a></td>
+        <td><%= meetings[meetingIndex].Title %></td>
+        <td><%= moment(meetings[meetingIndex].MeetingDate).format('MMM-DD-YYYY') %></td>
+        <td><%= meetings[meetingIndex].attendees %></td>
+        <td><a href="/editMeeting/<%= meetings[meetingIndex].MeetingId %>">Edit</a></td>
+        <td><a href="/deleteMeeting/<%= meetings[meetingIndex].MeetingId %>">Delete</a></td>
       </tr>
+      <% } %>
+      
     </tbody>
   </table>

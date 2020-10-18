@@ -1,4 +1,4 @@
-<div class="loginPage">
+<div class="createMeetingPage" id="createMeetingForm">
   <div class="field is-horizontal">
     <div class="field-label is-normal">
       <label class="label">Organizer</label>
@@ -6,7 +6,7 @@
     <div class="field-body">
       <div class="field">
         <p class="control">
-          <input class="input" type="text" placeholder="organizer" readonly>
+          <input class="input" name="organizer" type="text" placeholder="organizer" readonly>
         </p>
       </div>
     </div>
@@ -19,7 +19,7 @@
     <div class="field-body">
       <div class="field">
         <p class="control">
-          <input class="input" type="text" placeholder="Title">
+          <input class="input" name="title" type="text" placeholder="Title">
         </p>
       </div>
     </div>
@@ -32,7 +32,7 @@
     <div class="field-body">
       <div class="field">
         <div class="control">
-          <input class="input" type="date" placeholder="Meeting Date">
+          <input class="input" name="date" type="date" placeholder="Meeting Date">
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
     <div class="field-body">
       <div class="field">
         <div class="control">
-          <input class="input" type="text" placeholder="In case of multiple attendees use Pipe | as seperator. Ex: abcd@gmail.com|abcd1@gmail.com">
+          <input class="input" name="attendees" type="text" placeholder="In case of multiple attendees use Pipe | as seperator. Ex: abcd@gmail.com|abcd1@gmail.com">
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@
     <div class="field-body">
       <div class="field">
         <div class="control">
-          <button class="button is-primary">
+          <button class="button is-primary" onclick="submitForm('createMeeting', '/meetings', '/VEDmeeting')">
             Create Meeting
           </button>
         </div>
