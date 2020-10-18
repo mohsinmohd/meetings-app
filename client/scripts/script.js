@@ -26,7 +26,7 @@ function signInForm(formMethod, url, redirectUrl)
                     data = JSON.parse(data);
                     window.localStorage.setItem("accessToken", data.accessToken);
                     window.localStorage.setItem("refreshToken", data.refreshToken);
-                    window.location = redirectUrl;
+                    window.location.href = "http://localhost:3000" + redirectUrl;
                 })
             } else {
                 response.text().then((text) => {

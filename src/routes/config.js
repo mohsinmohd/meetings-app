@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const userController = require('../controllers/users-controller');
 const meetingsController = require('../controllers/meetings-controller');
@@ -27,15 +28,15 @@ app.get('/signUp', (req, res) => {
     res.render('../src/views/signUp');
 });
 
-app.get('/createMeeting', authenticateToken, (req, res) => {
+app.get('/createMeeting', (req, res) => {
     res.render('../src/views/createMeeting');
 });
 
-app.get('/editMeeting/:id', authenticateToken, (req, res) => {
+app.get('/editMeeting/:id', (req, res) => {
     meetingsController.getMeeting(req.params.id, res);
 });
 
-app.get('/VEDMeeting', authenticateToken, (req, res) => {
+app.get('/VEDMeeting', (req, res) => {
     meetingsController.getAllmeetings(req.params.userId, res);
 });
 

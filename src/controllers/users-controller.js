@@ -1,3 +1,4 @@
+require('dotenv').config()
 const userDao = require('../daos/user-dao');
 const jwt = require('jsonwebtoken')
 
@@ -35,13 +36,14 @@ module.exports.generateToken = (req, res) => {
 
 module.exports.signIn = (req, res) => {
     userDao.getUser(req.username).then((data, err) => {
-        const user = data[0];
+        let user = data[0];
         if(user != undefined || user != null) {
             if(user.Password == req.password) {
+                user = JSON.parse(JSON.stringify(user));
                 const accessToken = generateAccessToken(user)
                 const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
                 refreshTokens.push(refreshToken)
-                res.json({ accessToken: accessToken, refreshToken: refreshToken })
+                res.status(200).end(JSON.stringify({ accessToken: accessToken, refreshToken: refreshToken }))
             }
         }
         res.status(400).end('Login Failed');
